@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import re
-# import random
 from sys import argv
 
 def name_suffix(name):
