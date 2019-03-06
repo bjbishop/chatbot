@@ -12,6 +12,9 @@ def name_suffix(name):
             return name[2:]
         else:
             return name
+
+def name_game_printer(name):
+    print(name_game(name) + "\n")
             
 def name_game(name):
     name = name.lower()
