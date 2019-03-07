@@ -3,6 +3,17 @@
 import random
 from name_game import name_game_printer
 
+name = None
+
+def get_name(n):
+    global name
+    global responses
+    print(f"Hello {n}, nice to meet you!  I won't remember your name though...")
+    name = n
+    i = responses.index({"What is your name?": get_name })
+    del responses[i]
+        
+
 def affirmative_responses(answer):
     answer = answer.lower()
     try:
@@ -15,9 +26,6 @@ def affirmative_responses(answer):
             return True
     except ValueError:
         return False
-
-def get_name(name):
-    print(f"Hello {name}, nice to meet you!  I won't remember your name though...")
 
 def get_color(color):
     print(f"{color} is a pretty color")
@@ -42,18 +50,21 @@ def get_siblings(response):
         print("no way, me too!")
     else:
         print("Ah, so much drama around Christmas time")
-        
+
 def chat_prompts():
-    responses = [
-        { "What is your name?": get_name },
-        { "What is your favorite color?": get_color },
-        { "So what is your occupation?": get_job },
-        { "Are you married?": get_marriage },
-        { "Are you an only child?": get_only_child },
-        { "Let's play the name game!  What is your name?": name_game_printer },
-        { "Do you have any brothers or sisters?": get_siblings },
-    ]
+    global responses
     return(random.choice(responses))
+
+responses = [
+    { "What is your name?": get_name },
+    { "What is your favorite color?": get_color },
+    { "So what is your occupation?": get_job },
+    { "Are you married?": get_marriage },
+    { "Are you an only child?": get_only_child },
+    { "Let's play the name game!  What name should I use?": name_game_printer },
+    { "Do you have any brothers or sisters?": get_siblings },
+]
+        
 
 def exit_messages():
     responses = [
@@ -66,21 +77,18 @@ def exit_messages():
     ]
     return(random.choice(responses))
         
-## Case statement?
-# def f(x):
-#     return {
-#         'a': 1,
-#         'b': 2
-#     }.get(x, 9) 
-
 answer = ""
 
 if __name__ == "__main__":
     while answer != 'exit' and answer != 'quit':
+        print(responses)
+        prompt = chat_prompts()
+        print(list(prompt.keys())[0])
         try:
-            prompt = chat_prompts()
-            print(list(prompt.keys())[0])
-            answer = input('--> ').lower()
+            if name is None:
+                answer = input('--> ').lower()
+            else:
+                answer = input(f"{name}--> ").lower()
             list(prompt.values())[0].__call__(answer)
         except EOFError:
             print(exit_messages())
